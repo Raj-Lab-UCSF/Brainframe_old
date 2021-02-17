@@ -19,6 +19,7 @@ Below is a short description of the various functions, scripts, and data files i
 
 	- The above will generate a human input_struct which can then be fed to `brainframe.m` as follows, generating the image seen below:
 
+
 	> brainframe(input_struct)
 
 	![human_default](/ExampleImages/brainframe_Help_01.png)
@@ -117,9 +118,11 @@ Below are some brief examples on the basics of the functionality of the Brainfra
 
 	- Change this to alter the path you load from:
 
+
 	> matpath = cd;
 
 	- Create input_struct:
+
 
 	> input_struct = brainframe_inputs_human(matpath);
 	> 
@@ -131,9 +134,11 @@ Below are some brief examples on the basics of the functionality of the Brainfra
 
 	- Change this to alter the path you load from:
 
+
 	> matpath = cd;
 
 	- Create input_struct:
+
 
 	> input_struct = brainframe_inputs_mouse(matpath);
 	> 
@@ -147,6 +152,7 @@ Below are some brief examples on the basics of the functionality of the Brainfra
 
 	- Create input_struct with savenclose set to 1 rather than 0:
 
+
 	> matpath = cd;
 	> 
 	> input_struct = brainframe_inputs_mouse(matpath,'savenclose',1)
@@ -158,6 +164,7 @@ Below are some brief examples on the basics of the functionality of the Brainfra
 - **Using the `region_groups` and `cmap` fields to make colorful per-region visualizations**:
 
 	- The below code creates region_groups based on major region IDs:
+
 
 	> reggroups = zeros(213,1);
 	> 
@@ -181,9 +188,11 @@ Below are some brief examples on the basics of the functionality of the Brainfra
 
 	- Next we create the cmap based on region_groups:
 
+
 	> cmap = hsv(length(unique(reggroups)));
 
 	- Finally we specify input_struct fields to be customized using a Name and Value pair argument, as is usual in Matlab. This creates a user specified input_struct with the attendant visualization below:
+
 
 	> matpath = cd;
 	> 
@@ -204,13 +213,15 @@ Below are some brief examples on the basics of the functionality of the Brainfra
 
 	- Set regions you don't want visualized to 0 in the data vector, as below:
 
+
 	> datavec = zeros(426,1);
 	> 
 	> datavec(27:37) = 1;
 
 	- Reset the fields you want to reset, including using reggroups and cmap from the prior example to reset `region_groups` and `cmap`:
 
-	> input_struct = brainframe_inputs_mouse(matpath,'region_groups',reggroups,'cmap',cmap,'xfac',0.075,'sphere',1,'data',datavec);
+
+	> input_struct = brainframe_inputs_mouse(matpath,'region_groups',reggroups,'cmap',cmap,'xfac',0.075,'sphere',1,'data',... datavec);
 	>
 	> brainframe(input_struct);
 	> 
@@ -226,9 +237,11 @@ Below are some brief examples on the basics of the functionality of the Brainfra
 
 	- Zeroing out the diagonal:
 
+
 	> input_struct.conmat = input_struct.conmat -  diag(diag(input_struct.conmat)); 
 
 	- Zeroing out all non-hippocampal connectivity data:
+
 
 	> input_struct.conmat(1:26,:) = 0;
 	> 
@@ -237,10 +250,12 @@ Below are some brief examples on the basics of the functionality of the Brainfra
 	> input_struct.conmat(38:end,:) = 0;
 
 	- This line thresholds conmat:
+
 	
 	>  input_struct.conmat(input_struct.conmat<0.5*mean(nonzeros(input_struct.conmat))) = 0;
 
 	- Visualize connectivity:
+
 
 	> brainframe(input_struct);
 	> 
@@ -252,21 +267,25 @@ Below are some brief examples on the basics of the functionality of the Brainfra
 
 	- First load in and select the example per-voxel data:
 
+
 	> matpath = cd;
 	> 
 	> load([matpath filesep 'PerVox_ExampleData.mat'],'pervoxdata');
 
 	- Here we use Pvalb+ interneuron distributions
 
+
 	> datinput = pervoxdata.Pvalb;
 
 	- Co-register your data to the reference atlas!
+
 
 	> datinput = imresize3(datinput,[133 81 115]);
 	> 
 	> datinput(datinput<0) = 0;
 
 	- Create your input_struct and visualize per-voxel data:
+
 	
 	> input_struct = brainframe_inputs_mouse(matpath,'voxUreg',0,'data',datinput,'nbin',5,'cmap',autumn(5));
 	> 
