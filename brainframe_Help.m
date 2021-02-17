@@ -33,10 +33,13 @@ view([-1 0 0]);
 
 %% Fields of input_struct:
 % voxUreg: Binary flag for per-voxel or per-region visualizations. Human &
-% mouse defaults are both 0.
+% mouse defaults are both 1. A value of 1 indicates per-region 
+% visualizations, and a value of 0 indicates per-voxel visualizations. 
 % 
-% brain_atlas: 3D atlas with numeric regional IDs per-voxel. Human default
-% is the 86-region Desikan & mouse default is the 213-region AIBS CCF.
+% brain_atlas: 3D volumetric atlas with numeric regional IDs per-voxel. 
+% Human default is the 86-region Desikan & mouse default is the 213-region 
+% AIBS CCF.
+%
 % bgcolor: Image background color. Options are 'k', 'w', 'other' (which
 % produces gray). Human & mouse defaults are 'k'.
 % 
@@ -53,7 +56,7 @@ view([-1 0 0]);
 % data: Desired data input, specified as either a vector of per-voxel or 
 % per-region entries. Per voxel data can also be specified as a 3D matrix.
 % Default for humans is per-region tau PET pathology data and the default
-% for mice if per-region sem-quantitative tau IHC/IF data.
+% for mice is per-region semi-quantitative tau IHC/IF data.
 % 
 % nbin: Number of bins per voxel data is divided into for colormap
 % visualization. This field only applies to per-voxel data. Default is 1.
@@ -73,7 +76,7 @@ view([-1 0 0]);
 % visualizations. Default is 0.
 % 
 % sphere_npts: This field specifies how many points are used to construct
-% the spheres, relative to each sphere's radius. Default is 100.
+% the spheres, relative to each sphere's radius. Default is 35.
 % 
 % centered: This is a two element vector, with fields specifying different
 % elements of pointcloud functionality. The first element is a binary flag
@@ -91,7 +94,7 @@ view([-1 0 0]);
 % and density for both per-region and per-voxel visulizations. Default = 1.
 % 
 % pointsize: Specifies the size of points in the visualizations. Default is
-% 50 for humans and 10 for mice.
+% 50 for humans and 1 for mice.
 % 
 % iscon: Binary flag specifying whether to visualize connectivity. Default
 % is 0.
@@ -141,7 +144,7 @@ reggroups(pal) = 10; reggroups(pon) = 11; reggroups(str) = 12;
 reggroups(tha) = 13;
 reggroups = [reggroups;reggroups];
 
-cmap = hsv(length(unique(reggroups))); %Setting colormap
+cmap = hsv(length(unique(reggroups))); %Creating colormap
 
 matpath = cd;
 input_struct = brainframe_inputs_mouse(matpath,'region_groups',...
