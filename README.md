@@ -14,6 +14,7 @@ Below is a short description of the various functions, scripts, and data files i
 - `brainframe_inputs_human`: creates a human input_struct for `brainframe.m` to render. There are two types of input this functions takes. The first is a filepath which the function loads from and saves the input_struct into. The second set of inputs follows the `varargin` style of Matlab. Only specifying the filepath will result in the default input_struct being created. Please the below code snippet for an example:
 
 	> matpath = cd; %Change this to alter the path you load from
+	> 
 	> input_struct = brainframe_inputs_human(matpath);
 
 	- The above will generate a human input_struct which can then be fed to `brainframe.m` as follows, generating the image seen below:
@@ -25,8 +26,11 @@ Below is a short description of the various functions, scripts, and data files i
 - `brainframe_inputs_mouse`: creates a mouse input_struct. This function operates exactly the same way as the human function, with exactly the same input_struct fields. Please see below for an example:
 
 	> matpath = cd; %Change this to alter the path you load from
+	> 
 	> input_struct = brainframe_inputs_mouse(matpath);
+	> 
 	> brainframe(input_struct)
+	> 
 	> view([-1 0 0]);
 
 	![mouse_default](/ExampleImages/brainframe_Help_02.png)
@@ -118,6 +122,7 @@ Below are some brief examples on the basics of the functionality of the Brainfra
 	- Create input_struct:
 
 	> input_struct = brainframe_inputs_human(matpath);
+	> 
 	> brainframe(input_struct)
 
 	![human_default](/ExampleImages/brainframe_Help_01.png)
@@ -131,7 +136,9 @@ Below are some brief examples on the basics of the functionality of the Brainfra
 	- Create input_struct:
 
 	> input_struct = brainframe_inputs_mouse(matpath);
+	> 
 	> brainframe(input_struct)
+	> 
 	> view([-1 0 0]);
 
 	![mouse_default](/ExampleImages/brainframe_Help_02.png)
@@ -141,7 +148,9 @@ Below are some brief examples on the basics of the functionality of the Brainfra
 	- Create input_struct with savenclose set to 1 rather than 0:
 
 	> matpath = cd;
+	> 
 	> input_struct = brainframe_inputs_mouse(matpath,'savenclose',1)
+	> 
 	> brainframe(input_struct)
 
 	- `brainframe.m` will now create 3 on-axis view image files but will not render an image in the Matlab figure GUI. These files will be saved into cd or into the specified filepath.
@@ -151,14 +160,23 @@ Below are some brief examples on the basics of the functionality of the Brainfra
 	- The below code creates region_groups based on major region IDs:
 
 	> reggroups = zeros(213,1);
+	> 
 	> amy = 1:11; cer = 12:23; sub = 24:26; hip = 27:37; hyp = 38:57; 
+	> 
 	> ncx = 58:95; med = 96:120; mid = 121:141; olf = 142:149; 
+	> 
 	> pal = 150:157; pon = 158:170; str = 171:178; tha = 179:213;
-	> reggroups(amy) = 1; reggroups(cer) = 2; reggroups(sub) = 3; 
+	> 
+	> reggroups(amy) = 1; reggroups(cer) = 2; reggroups(sub) = 3;
+	>  
 	> reggroups(hip) = 4; reggroups(hyp) = 5; reggroups(ncx) = 6;
+	> 
 	> reggroups(med) = 7; reggroups(mid) = 8; reggroups(olf) = 9;
+	> 
 	> reggroups(pal) = 10; reggroups(pon) = 11; reggroups(str) = 12;
+	> 
 	> reggroups(tha) = 13;
+	> 
 	> reggroups = [reggroups;reggroups];
 
 	- Next we create the cmap based on region_groups:
@@ -168,9 +186,11 @@ Below are some brief examples on the basics of the functionality of the Brainfra
 	- Finally we specify input_struct fields to be customized using a Name and Value pair argument, as is usual in Matlab. This creates a user specified input_struct with the attendant visualization below:
 
 	> matpath = cd;
-	> input_struct = brainframe_inputs_mouse(matpath,'region_groups',...
-	> reggroups,'cmap',cmap);
+	> 
+	> input_struct =  brainframe_inputs_mouse(matpath,'region_groups',reggroups,'cmap',cmap);
+	> 
 	> brainframe(input_struct)
+	> 
 	> view([-1 0 0]);
 
 	![mouse_regioncolors](/ExampleImages/brainframe_Help_05.png)
@@ -185,13 +205,15 @@ Below are some brief examples on the basics of the functionality of the Brainfra
 	- Set regions you don't want visualized to 0 in the data vector, as below:
 
 	> datavec = zeros(426,1);
+	> 
 	> datavec(27:37) = 1;
 
 	- Reset the fields you want to reset, including using reggroups and cmap from the prior example to reset `region_groups` and `cmap`:
 
-	> input_struct = brainframe_inputs_mouse(matpath,'region_groups',...
-	> reggroups,'cmap',cmap,'xfac',0.075,'sphere',1,'data',datavec);
-	> brainframe(input_struct)
+	> input_struct = brainframe_inputs_mouse(matpath,'region_groups',reggroups,'cmap',cmap,'xfac',0.075,'sphere',1,'data',datavec);
+	>
+	> brainframe(input_struct);
+	> 
 	> view([-1 0 0]);
 
 	![mouse_selectregions](/ExampleImages/brainframe_Help_11.png)	
@@ -204,23 +226,24 @@ Below are some brief examples on the basics of the functionality of the Brainfra
 
 	- Zeroing out the diagonal:
 
-	> input_struct.conmat = input_struct.conmat - ...
-	> diag(diag(input_struct.conmat)); 
+	> input_struct.conmat = input_struct.conmat -  diag(diag(input_struct.conmat)); 
 
 	- Zeroing out all non-hippocampal connectivity data:
 
 	> input_struct.conmat(1:26,:) = 0;
+	> 
 	> input_struct.conmat(27:37,[1:26 38:end]) = 0;
+	> 
 	> input_struct.conmat(38:end,:) = 0;
 
 	- This line thresholds conmat:
 	
-	> input_struct.conmat(input_struct.conmat<0.5*...
-	> mean(nonzeros(input_struct.conmat))) = 0;
+	>  input_struct.conmat(input_struct.conmat<0.5*mean(nonzeros(input_struct.conmat))) = 0;
 
 	- Visualize connectivity:
 
 	> brainframe(input_struct);
+	> 
 	> view([-1 0 0]);
 
 	![mouse_selectregions](/ExampleImages/brainframe_Help_12.png)
@@ -230,6 +253,7 @@ Below are some brief examples on the basics of the functionality of the Brainfra
 	- First load in and select the example per-voxel data:
 
 	> matpath = cd;
+	> 
 	> load([matpath filesep 'PerVox_ExampleData.mat'],'pervoxdata');
 
 	- Here we use Pvalb+ interneuron distributions
@@ -239,13 +263,15 @@ Below are some brief examples on the basics of the functionality of the Brainfra
 	- Co-register your data to the reference atlas!
 
 	> datinput = imresize3(datinput,[133 81 115]);
+	> 
 	> datinput(datinput<0) = 0;
 
 	- Create your input_struct and visualize per-voxel data:
 	
-	> input_struct = brainframe_inputs_mouse(matpath,'voxUreg',
-	> 0,'data',datinput,'nbin',5,'cmap',autumn(5));
+	> input_struct = brainframe_inputs_mouse(matpath,'voxUreg',0,'data',datinput,'nbin',5,'cmap',autumn(5));
+	> 
 	> brainframe(input_struct);
+	> 
 	> view([-1 0 0]);
 
 	![mouse_selectregions](/ExampleImages/brainframe_Help_13.png)
@@ -260,5 +286,5 @@ This section recaps best practices, how to use & cite this package, and how to c
 - **Citations**: Brainframe can be cited by the Github repository URL and the DOI associated with it. When citing Brainframe, please also cite `arrow3.m`. Citation information and other information about [arrow3.m](https://www.mathworks.com/matlabcentral/fileexchange/14056-arrow3) can be found on the Mathworks exchange site in the hyperlinked text.
 
 - **Contact**: to contact the creators of Brainframe, Chris Mezias & Justin Torok, please use the following email addresses:
-	-Chris Mezias: cmezias@gmail.com
-	-Justin Torok: jlt46@cornell.edu
+	- Chris Mezias: cmezias@gmail.com
+	- Justin Torok: jlt46@cornell.edu
