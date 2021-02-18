@@ -11,14 +11,14 @@ Below is a short description of the various functions, scripts, and data files i
 ### Functions
 - `brainframe.m`: the rendering function, which takes an input_struct, with fields described in the below **Fields of input_struct** subsection.
 
-- `brainframe_inputs_human`: creates a human input_struct for `brainframe.m` to render. There are two types of input this functions takes. The first argument to `brainframe_inputs_human.m`, fpath, specifies where the .mat dependencies are located. All further inputs are optional, keyword arguments that allow for customization of the visualization. See **Fields of input_struct** for more information. Only specifying the filepath will result in the default input_struct being created. 
+- `brainframe_inputs_human.m`: creates a human input_struct for `brainframe.m` to render. There are two types of input this functions takes. The first argument to `brainframe_inputs_human.m`, fpath, specifies where the .mat dependencies are located. All further inputs are optional, keyword arguments that allow for customization of the visualization. See **Fields of input_struct** for more information. Only specifying the filepath will result in the default input_struct being created. 
 
-- `brainframe_inputs_mouse`: creates a mouse input_struct. This function operates exactly the same way as the human function, with exactly the same input_struct fields. 
+- `brainframe_inputs_mouse.m`: creates a mouse input_struct. This function operates exactly the same way as the human function, with exactly the same input_struct fields. 
 
 - `arrow3`: a widely used Mathworks exchange function, which the authors of Brainframe did not create. This function is originally coded by Tom Davis. This function is only called internally by `brainframe.m` during rendering and it is not necessary for the user to interact with it. Please refer to the following link for more information about this function: [arrow3.m](https://www.mathworks.com/matlabcentral/fileexchange/14056-arrow3)
 
 ### Scripts
-- `brainframe_Help`: an extensively commented example script which goes through the basic syntax of using the Brainframe package. This script also contains almost a dozen use case examples, and if run will generate images following the code examples.
+- `brainframe_Help.m`: an extensively commented example script which goes through the basic syntax of using the Brainframe package. This script also contains almost a dozen use case examples, and if run will generate images following the code examples.
 
 - `brainframe_humandefault_creator.m`: this script is an extensively commented example demonstrating both the default human input_struct field values and how to change or declare input_struct fields directly by using an input_struct.fieldname syntax. This can be found in the **ExampleDefaults** folder.
 
