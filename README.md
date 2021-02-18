@@ -1,9 +1,9 @@
 # Brainframe
 [Chris Mezias](https://github.com/chm2062) & [Justin Torok](https://github.com/justin-torok)
 
-Matlab functionality for creating 3D human & mouse brain renderings, with many options. This is a tool for visualizing per-voxel or per-region data, as well as connectome data, in a 3D surface representation of a brain. This function has been tested for and works using mice and human brain atlases, but may well work with other species' brains. Further help including use case examples can be found in the script `brainframe_Help.m`.
+MATLAB functionality for creating 3D human & mouse brain renderings, with many options. This is a tool for visualizing per-voxel or per-region data, as well as connectome data, in a 3D surface representation of a brain. This function has been tested for and works using mice and human brain atlases, but may well work with other species' brains. Further help including use case examples can be found in the script `brainframe_Help.m`.
 
-To begin using the Brainframe package, please clone or download the entire repository into a folder accessible to Matlab on your computer. Rearranging folder contents before getting comfortable with use could lead to package functionality breaking.
+To begin using the Brainframe package, please clone or download the entire repository into a folder accessible to MATLAB on your computer. Rearranging folder contents before getting comfortable with use could lead to package functionality breaking.
 
 ## 1. Functions, Scripts, & Data Files
 Below is a short description of the various functions, scripts, and data files included in the Brainframe package.
@@ -11,32 +11,11 @@ Below is a short description of the various functions, scripts, and data files i
 ### Functions
 - `brainframe.m`: the rendering function, which takes an input_struct, with fields described in the below **Fields of input_struct** subsection.
 
-- `brainframe_inputs_human`: creates a human input_struct for `brainframe.m` to render. There are two types of input this functions takes. The first is a filepath which the function loads from and saves the input_struct into. The second set of inputs follows the `varargin` style of Matlab. Only specifying the filepath will result in the default input_struct being created. Please the below code snippet for an example:
+- `brainframe_inputs_human`: creates a human input_struct for `brainframe.m` to render. There are two types of input this functions takes. The first argument to `brainframe_inputs_human.m`, fpath, specifies where the .mat dependencies are located. All further inputs are optional, keyword arguments that allow for customization of the visualization. See **Fields of input_struct** for more information. Only specifying the filepath will result in the default input_struct being created. 
 
-	> matpath = cd; %Change this to alter the path you load from
-	> 
-	> input_struct = brainframe_inputs_human(matpath);
+- `brainframe_inputs_mouse`: creates a mouse input_struct. This function operates exactly the same way as the human function, with exactly the same input_struct fields. 
 
-	- The above will generate a human input_struct which can then be fed to `brainframe.m` as follows, generating the image seen below:
-
-
-	> brainframe(input_struct)
-
-	![human_default](/ExampleImages/brainframe_Help_01.png)
-
-- `brainframe_inputs_mouse`: creates a mouse input_struct. This function operates exactly the same way as the human function, with exactly the same input_struct fields. Please see below for an example:
-
-	> matpath = cd; %Change this to alter the path you load from
-	> 
-	> input_struct = brainframe_inputs_mouse(matpath);
-	> 
-	> brainframe(input_struct)
-	> 
-	> view([-1 0 0]);
-
-	![mouse_default](/ExampleImages/brainframe_Help_02.png)
-
-- `arrow3`: a widely used Mathworks exchange function, which the authors of Brainframe did not create. This function is only called internally by `brainframe.m` during rendering and it is not necessary for the user to interact with it. Please refer to the following link for more information about this function: [arrow3.m](https://www.mathworks.com/matlabcentral/fileexchange/14056-arrow3)
+- `arrow3`: a widely used Mathworks exchange function, which the authors of Brainframe did not create. This function is originally coded by Tom Davis. This function is only called internally by `brainframe.m` during rendering and it is not necessary for the user to interact with it. Please refer to the following link for more information about this function: [arrow3.m](https://www.mathworks.com/matlabcentral/fileexchange/14056-arrow3)
 
 ### Scripts
 - `brainframe_Help`: an extensively commented example script which goes through the basic syntax of using the Brainframe package. This script also contains almost a dozen use case examples, and if run will generate images following the code examples.
@@ -57,7 +36,7 @@ Below is a short description of the various functions, scripts, and data files i
 - **PerVox_ExampleData.mat**: this is the example per-voxel data that can be rendered. Please see the **Brief Examples** subsection below and lines 207-216 in the script `brainframe_Help.m` for further information and example renderings.
 
 ## 2. Fields of input_struct
-This section describes the fields of input_struct, the structure object which `brainframe.m` takes for brain rendering. Modifying the fields of input_struct will change the rendering. You can change these fields directly in an already specified input_struct. Alternately, you can create a new input_struct with either `brainframe_inputs_human` or `brainframe_inputs_mouse`. This can be done by specifying each field and the value you want to change it to as a Name and Value pair, following standard Matlab syntax. This explanation section can also be duplicated within Matlab by publishing or reading the `brainframe_Help.m` script.
+This section describes the fields of input_struct, the structure object which `brainframe.m` takes for brain rendering. Modifying the fields of input_struct will change the rendering. You can change these fields directly in an already specified input_struct. Alternately, you can create a new input_struct with either `brainframe_inputs_human` or `brainframe_inputs_mouse`. This can be done by specifying each field and the value you want to change it to as a Name and Value pair, following standard MATLAB syntax. This explanation section can also be duplicated within MATLAB by publishing or reading the `brainframe_Help.m` script.
 
 - `voxUreg`: Binary flag for per-voxel or per-region visualizations. Human & mouse defaults are both 1. A value of 1 indicates per-region visualizations, and a value of 0 indicates per-voxel visualizations. 
 
@@ -65,7 +44,7 @@ This section describes the fields of input_struct, the structure object which `b
 
 - `bgcolor`: Image background color. Options are 'k', 'w', 'other' (which produces gray). Human & mouse defaults are 'k'.
 
-- `savenclose`: Binary flag indicating whether the user wants images of on axis views saved and the GUI to close (value = 1), or whether the user wants to open the GUI (value = 0). Mouse and human defaults are both 0.
+- `savenclose`: Binary flag indicating whether the user wants to have on-axis view saved image files (savenclose = 1) with no open MATLAB figure interface or whether the user wants to open the MATLAB figure interface to further interact with or customize their image (savenclose = 0). Mouse and human defaults are both 0.
 
 - `img_labels`: Your desired filename, as a string, if savenclose == 1. Default is 'yourfilename'. You can also specify a full filepath.
 
@@ -159,11 +138,12 @@ Below are some brief examples on the basics of the functionality of the Brainfra
 	> 
 	> brainframe(input_struct)
 
-	- `brainframe.m` will now create 3 on-axis view image files but will not render an image in the Matlab figure GUI. These files will be saved into cd or into the specified filepath.
+	- `brainframe.m` will now create 3 on-axis view image files but will not render an image in the MATLAB figure GUI. These files will be saved into cd or into the specified filepath.
 
 - **Using the `region_groups` and `cmap` fields to make colorful per-region visualizations**:
 
-	- The below code creates region_groups based on major region IDs:
+	- The below code creates region_groups based on major region IDs
+	- Then it creates cmap based on the number of unique region_groups
 
 
 	> reggroups = zeros(213,1);
@@ -185,13 +165,10 @@ Below are some brief examples on the basics of the functionality of the Brainfra
 	> reggroups(tha) = 13;
 	> 
 	> reggroups = [reggroups;reggroups];
-
-	- Next we create the cmap based on region_groups:
-
-
+	> 
 	> cmap = hsv(length(unique(reggroups)));
 
-	- Finally we specify input_struct fields to be customized using a Name and Value pair argument, as is usual in Matlab. This creates a user specified input_struct with the attendant visualization below:
+	- Finally we specify input_struct fields to be customized using a Name and Value pair argument, as is usual in MATLAB. This creates a user specified input_struct with the attendant visualization below:
 
 
 	> matpath = cd;
@@ -300,9 +277,15 @@ Below are some brief examples on the basics of the functionality of the Brainfra
 ## 4. Best Practices, Citations, & Contact
 This section recaps best practices, how to use & cite this package, and how to contact the creator. 
 
-- **Best Practices**: Download the contents of this package and keep all scripts in main folder together. Keep all items in main folder until comfortable with use. Moving items around is possible and can be useful, but is not recommended unless the user is both very familiar with Matlab and has experience with Brainframe. Further help and more use case examples can be found in `brainframe_Help.m` and default examples can be found in the **ExampleDefaults** folder.
+- **Best Practices**: Download the contents of this package and keep all scripts in main folder together. Keep all items in main folder until comfortable with use. Moving items around is possible and can be useful, but is not recommended unless the user is both very familiar with MATLAB and has experience with Brainframe. Further help and more use case examples can be found in `brainframe_Help.m` and default examples can be found in the **ExampleDefaults** folder.
 
-- **Citations**: Brainframe can be cited by the Github repository URL and the DOI associated with it. When citing Brainframe, please also cite `arrow3.m`. Citation information and other information about [arrow3.m](https://www.mathworks.com/matlabcentral/fileexchange/14056-arrow3) can be found on the Mathworks exchange site in the hyperlinked text.
+- **Citations**: Brainframe can be cited by the GitHub repository URL and the DOI associated with it. When citing Brainframe, please also cite `arrow3.m`, which was coded by Tom Davis, not the authors of the Brainframe package. Citation information and other information about [arrow3.m](https://www.mathworks.com/matlabcentral/fileexchange/14056-arrow3) can be found on the Mathworks exchange site in the hyperlinked text. Please see below for data source citations:
+	
+	- Connectome & Volumetric Atlas are from AIBS, originally published in and retrieved from: 
+		- Oh, SW, et al. 2014. A mesoscale connectome of the mouse brain. Nature. Volume 508, pp. 207-214.
+
+	- Mouse tau pathology data from figures in published literature: 
+		- Iba, M, et al. 2013. Synthetic tau fibrils mediate transmission of neurofibrillary tangles in a transgenic mouse model of Alzheimer's-like tauopathy. Journal of Neuroscience. Volume 33(3), pp. 1024-1037.
 
 - **Contact**: to contact the creators of Brainframe, Chris Mezias & Justin Torok, please use the following email addresses:
 	- Chris Mezias: cmezias@gmail.com
