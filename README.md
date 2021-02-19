@@ -76,7 +76,7 @@ numbers resulting in more centering. Default is [1 2].
 
 - `iscon`: Binary flag specifying whether to visualize connectivity. Default is 0. 
 
-- `conmat`: Connectivity matrix that is nreg X nreg. Default is 86 X 86 Desikan connectome for humans and the 426 X 426 AIBS connectome for mice. If your connectome is directional, it must have outgoing connectivity for each region per-row and incoming connectivity for each region per-column. 
+- `conmat`: Connectivity matrix that is nreg X nreg. Default is an 86 X 86 connectome in Desikan space for humans and the 426 X 426 AIBS connectome for mice. If your connectome is directional, it must have outgoing connectivity for each region per-row and incoming connectivity for each region per-column.
 
 - `con_rescale`: Universal connectivity multiplier that scales the number of and spread of the ellipses plotted to visually simulate neural connectivity. Ellipses are visualized per region pairs in a number proportional to the C(i,j) entry of the connectome. The default for humans is 1 and the default for mice is 0.01.
 
