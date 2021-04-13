@@ -179,7 +179,7 @@ Below are some brief examples on the basics of the functionality of the Brainfra
 	> 
 	> view([-1 0 0]);
 
-	![mouse_regioncolors](/ExampleImages/brainframe_Help_05.png)
+	![mouse_regioncolors](/ExampleImages/brainframe_Help_04.png)
 
 - **Visualizing only certain regions, rather than all of them**:
 
@@ -204,7 +204,7 @@ Below are some brief examples on the basics of the functionality of the Brainfra
 	> 
 	> view([-1 0 0]);
 
-	![mouse_selectregions](/ExampleImages/brainframe_Help_11.png)	
+	![mouse_selectregions](/ExampleImages/brainframe_Help_8.png)	
 
 - **Visualizing connectivity using the selected regions from above**:
 
@@ -238,7 +238,7 @@ Below are some brief examples on the basics of the functionality of the Brainfra
 	> 
 	> view([-1 0 0]);
 
-	![mouse_selectregions](/ExampleImages/brainframe_Help_12.png)
+	![mouse_selectregions](/ExampleImages/brainframe_Help_09.png)
 
 - **Per-voxel visualizations**:
 
@@ -270,7 +270,7 @@ Below are some brief examples on the basics of the functionality of the Brainfra
 	> 
 	> view([-1 0 0]);
 
-	![mouse_selectregions](/ExampleImages/brainframe_Help_13.png)
+	![mouse_selectregions](/ExampleImages/brainframe_Help_10.png)
 
 - **More examples and further information**: for more examples and further information about various use cases, including some human use case examples, please see the `brainframe_Help.m` file. 
 

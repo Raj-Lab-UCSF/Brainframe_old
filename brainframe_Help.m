@@ -253,22 +253,3 @@ input_struct.data(fROI) = 1; %Only render spheres above threshold regions
 input_struct.xfac = 0.5; %Remember sphere rescaling very different
 
 brainframe(input_struct);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
