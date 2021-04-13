@@ -327,10 +327,12 @@ else
     
     %Setting up binning and misc for visualization
     nbin = input_struct.nbin;
-    rangei = linspace(0,0.7,nbin+1);
+    rangei = linspace(0,input_struct.voxthresh,nbin+1);
     rangei = fliplr(rangei);
     xfac = input_struct.xfac;
     ptsz = input_struct.pointsize;
+    mins = sortvals(fracvals<rangei(1) & fracvals>=rangei(1+1));
+    meanmins = mean(mins);
     
     %Looping through bins and visualizing point clouds
     for i = 1:nbin
@@ -338,8 +340,8 @@ else
         bound1 = bounds(1); bound2 = bounds(end);
         [x,y,z] = ind2sub(size(interpmap_f),find(interpmap_f>=bound2 & interpmap_f<bound1));
         xyzmap = [y x z];
-        ifac = xfac * i;
-        xyz_jitter = repmat(xyzmap,floor(ifac)+1,1) + [zeros(size(xyzmap));rand(size(xyzmap,1)*floor(ifac),size(xyzmap,2))];
+        ifac = xfac * (mean(bounds)/meanmins);
+        xyz_jitter = repmat(xyzmap,floor(ifac)+1,1) + rand(size(xyzmap,1)*(1+floor(ifac)),size(xyzmap,2));
         ptcloud = pointCloud(xyz_jitter,'Color',repmat(cmap(i,:),size(xyz_jitter,1),1),...
             'Intensity',repmat(0.1*i,size(xyz_jitter,1),1));
         pcshow(ptcloud,'MarkerSize',ptsz); hold on;
@@ -357,17 +359,20 @@ set(ax,'XColor','none','YColor','none','ZColor','none');
 savenclose = input_struct.savenclose;
 imglab = input_struct.img_labels;
 imgtype = input_struct.img_format;
+set(gcf, 'InvertHardCopy', 'off'); 
 if savenclose
     view([0, 0, 1]);
     ax = gca;
     set(ax,'XColor','none','YColor','none','ZColor','none');
     set(ax,'XTick',[],'YTick',[],'ZTick',[]);
     saveas(gcf,[imglab '_sagittal'],imgtype);
+    
     view([-1, 0, 0]);
     ax = gca;
     set(ax,'XColor','none','YColor','none','ZColor','none');
     set(ax,'XTick',[],'YTick',[],'ZTick',[]);
     saveas(gcf,[imglab '_axial'],imgtype);
+    
     view([0, -1, 0]);
     ax = gca;
     set(ax,'XColor','none','YColor','none','ZColor','none');
