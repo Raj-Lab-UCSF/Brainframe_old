@@ -218,7 +218,7 @@ datinput = imresize3(datinput,[133 81 115]); %Co-registering data to CCF
 datinput(datinput<0) = 0; %Getting rid of negative artifacts
 
 input_struct = brainframe_inputs_mouse(matpath,'voxUreg',0,'data',...
-    datinput,'xfac',0.5,'nbin',5,'cmap',autumn(5)); %Note size(cmap,1)==nbin
+    datinput,'xfac',0.5,'voxthresh',0.75,'nbin',5,'cmap',autumn(5)); %Note size(cmap,1)==nbin
 brainframe(input_struct);
 view([-1 0 0]);
 

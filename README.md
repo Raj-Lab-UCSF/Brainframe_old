@@ -54,6 +54,8 @@ This section describes the fields of input_struct, the structure object which `b
 
 - `nbin`: Number of bins per voxel data is divided into for colormap visualization. This field only applies to per-voxel data. Default is 1.
 
+- `voxthresh`: Threshold restricting the per-voxel data plotted based on the cumulative sum of density. Bounded between 0 and 1 and represents the fraction of total density to be plotted; default is 0.85.
+
 - `nreg`: Number of regions to go through in specified atlas. This must be a number equal to  the number of unique region IDs in brain_atlas. This field is only relevant for per-region data. Default is 86 for humans and 426 for mice. 
 
 - `region_groups`: This is a vector specifying the group each region is part of for colormap purposes. This vector must be the of length nreg. Default is an 86-element vector of 1s for humans and a 426 element vector of 1s for mice.
@@ -204,7 +206,7 @@ Below are some brief examples on the basics of the functionality of the Brainfra
 	> 
 	> view([-1 0 0]);
 
-	![mouse_selectregions](/ExampleImages/brainframe_Help_8.png)	
+	![mouse_selectregions](/ExampleImages/brainframe_Help_08.png)	
 
 - **Visualizing connectivity using the selected regions from above**:
 
@@ -264,7 +266,7 @@ Below are some brief examples on the basics of the functionality of the Brainfra
 	- Create your input_struct and visualize per-voxel data:
 
 	
-	> input_struct = brainframe_inputs_mouse(matpath,'voxUreg',0,'data',datinput,'nbin',5,'cmap',autumn(5));
+	> input_struct = brainframe_inputs_mouse(matpath,'voxUreg',0,'data',datinput,'xfac',0.5,'voxthresh',0.75,'nbin',5,'cmap',autumn(5));
 	> 
 	> brainframe(input_struct);
 	> 
