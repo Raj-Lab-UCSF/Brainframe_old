@@ -61,6 +61,10 @@ view([-1 0 0]);
 % nbin: Number of bins per voxel data is divided into for colormap
 % visualization. This field only applies to per-voxel data. Default is 1.
 % 
+% voxthresh: Threshold restricting the per-voxel data plotted based on the
+% cumulative sum of density. Bounded between 0 and 1 and represents the
+% fraction of total density to be plotted; default is 0.85
+%
 % nreg: Number of regions to go through in specified atlas. This must be a
 % number equal to  the number of unique region IDs in brain_atlas. This
 % field is only relevant for per-region data. Default is 86 for humans and
@@ -214,7 +218,7 @@ datinput = imresize3(datinput,[133 81 115]); %Co-registering data to CCF
 datinput(datinput<0) = 0; %Getting rid of negative artifacts
 
 input_struct = brainframe_inputs_mouse(matpath,'voxUreg',0,'data',...
-    datinput,'nbin',5,'cmap',autumn(5)); %Note size(cmap,1)==nbin
+    datinput,'xfac',0.5,'nbin',5,'cmap',autumn(5)); %Note size(cmap,1)==nbin
 brainframe(input_struct);
 view([-1 0 0]);
 

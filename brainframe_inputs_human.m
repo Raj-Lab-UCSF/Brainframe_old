@@ -45,6 +45,11 @@ data_ = testdata(:,1);
 %Number of evenly spaced bins for heatmap visualization of per voxel data
 nbin_ = 1;
 
+%Threshold on the voxels given expression based on the cumulative sum of
+%density across voxels when sorted from highest to lowest; number
+%represents the fraction of total density to be plotted
+voxthresh_ = 0.85;
+
 %Relevant For Per Region Visualizations: 
 
 %Setting number of regions
@@ -120,6 +125,7 @@ addParameter(ip, 'img_labels', img_labels_, validChar);
 addParameter(ip, 'img_format', img_format_, validImg);
 addParameter(ip, 'data', data_, validNonnegative);
 addParameter(ip, 'nbin', nbin_, validScalar);
+addParameter(ip, 'voxthresh', voxthresh_, validScalar);
 addParameter(ip, 'nreg', nreg_, validScalar);
 addParameter(ip, 'region_groups', region_groups_, validNonnegative);
 addParameter(ip, 'sphere', sphere_, validBoolean);
@@ -146,6 +152,7 @@ input_struct.img_labels = ip.Results.img_labels;
 input_struct.img_format = ip.Results.img_format;
 input_struct.data = ip.Results.data;
 input_struct.nbin = ip.Results.nbin;
+input_struct.voxthresh = ip.Results.voxthresh;
 input_struct.nreg = ip.Results.nreg;
 input_struct.region_groups = ip.Results.region_groups;
 input_struct.sphere = ip.Results.sphere;
