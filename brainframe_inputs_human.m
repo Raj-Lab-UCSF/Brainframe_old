@@ -110,7 +110,7 @@ conarrow_WL_ = [1.5 2.5];
 %Creating input parser
 ip = inputParser;
 validScalar = @(x) isnumeric(x) && isscalar(x) && (x>=0);
-validNonnegative = @(x) isnumeric(x) && all(x(:) > 0);
+validNonnegative = @(x) isnumeric(x) && all(x(:) >= 0);
 validBoolean = @(x) isscalar(x) && (x==0 || x==1);
 validChar = @(x) ischar(x);
 validImg = @(x) strcmp(x,'png') || strcmp(x,'jpg') || strcmp(x,'tiffn');

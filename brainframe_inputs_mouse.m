@@ -43,6 +43,9 @@ data_ = pathology(:,1);
 
 %Relevant For Per Voxel Visualizations Only:
 
+%Field for toggling region_groups coloring on or off; default is 0
+regsUbins_ = 0;
+
 %Number of evenly spaced bins for heatmap visualization of per voxel data
 nbin_ = 1;
 
@@ -125,6 +128,7 @@ addParameter(ip, 'savenclose', savenclose_, validBoolean);
 addParameter(ip, 'img_labels', img_labels_, validChar);
 addParameter(ip, 'img_format', img_format_, validImg);
 addParameter(ip, 'data', data_, validNonnegative);
+addParameter(ip, 'regsUbins', regsUbins_, validBoolean);
 addParameter(ip, 'nbin', nbin_, validScalar);
 addParameter(ip, 'voxthresh', voxthresh_, validScalar);
 addParameter(ip, 'nreg', nreg_, validScalar);
@@ -152,6 +156,7 @@ input_struct.savenclose = ip.Results.savenclose;
 input_struct.img_labels = ip.Results.img_labels;
 input_struct.img_format = ip.Results.img_format;
 input_struct.data = ip.Results.data;
+input_struct.regsUbins = ip.Results.regsUbins;
 input_struct.nbin = ip.Results.nbin;
 input_struct.voxthresh = ip.Results.voxthresh;
 input_struct.nreg = ip.Results.nreg;
