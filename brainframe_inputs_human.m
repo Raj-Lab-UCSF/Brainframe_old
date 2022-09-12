@@ -90,7 +90,7 @@ iscon_ = 0;
 conmat_ = conmat;
 
 %Multiplier for number of fibers from conmat
-con_rescale_ = 1;
+con_rescale_ = 50;
 
 %Fiber width setting (uses plot3() for visualizing)
 con_width_ = 0.01;
@@ -105,7 +105,7 @@ con_cmap_ = lines(length(unique(region_groups_)));
 con_arch_ = 0.5;
 
 %Setting the width and length of arrows on fibers indicating direction (pre to post synpatic ROI)
-conarrow_WL_ = [1.5 2.5];
+conarrow_WL_ = [1 0.5];
 
 %Creating input parser
 ip = inputParser;
