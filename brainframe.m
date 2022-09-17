@@ -169,8 +169,10 @@ if voxUreg
 %             normcon = normmat(g,:);
 %             curcmap = concmap(g,:);
 %             conx = []; cony = []; conz = [];
-            for h = g:size(conmat,1)
-                if (conmat(g,h) > 0 || conmat(h,g) > 0) && ~(h==g) && centroids(g,1) > 0 && centroids(h,1) > 0
+            for h = 1:size(conmat,1)
+                cond1 = (conmat(g,h) > 0) && ~(h==g) && centroids(g,1) > 0 && centroids(h,1) > 0;
+                cond2 = (h > g) && ((conmat(g,h) > 0) && (conmat(h,g) > 0));
+                if cond1 && ~cond2
                     curx = [centroids(g,2) centroids(h,2)].';
                     cury = [centroids(g,1) centroids(h,1)].';
                     curz = [centroids(g,3) centroids(h,3)].';
@@ -178,10 +180,11 @@ if voxUreg
                     % calculate the direction of the connecting line between the two points
                     v = [curx(2)-curx(1); cury(2)-cury(1); curz(2)-curz(1)];
                     v_ = v/(v.' * v)^0.5;
-                    
+
                     % calculate the rotation matrix to transform [1 0 0] to v
                     % (https://math.stackexchange.com/questions/180418/calculate-rotation-matrix-to-align-vector-a-to-vector-b-in-3d/897677#897677)
                     e1 = [1 0 0].';
+                    
                     G = [[e1.'*v_, -norm(cross(e1,v_),2), 0];...
                     [norm(cross(e1,v_),2), e1.'*v_, 0];...
                     [0, 0, 1]];
@@ -192,11 +195,14 @@ if voxUreg
                     % calculate the rotation of [0 0 1] using R to find the proper
                     % perpendicular direction
 %                     if curx(1) > mean(centroids,2)
-%                         e3 = [0 0 1].';
-%                     else
 %                         e3 = [0 0 -1].';
+%                     else
+%                         e3 = [0 0 1].';
+%                         if curx(2) > curx(1)
+%                             e3 = [0 0 -1].';
+%                         end
 %                     end
-                    e3 = [0 0 1].';
+                    e3 = -[0 0 1].';
                     u = R*e3;
                     w = cross(v_,u);
                     
@@ -222,17 +228,21 @@ if voxUreg
                     randtheta_hg = theta_hg*(2*rands_hg - 1);
                     gh_on = (conmat(g,h) > 0);
                     hg_on = (conmat(h,g) > 0);
-                    uws_gh = repmat(u,1,narcs_gh).*cos(repmat(randtheta_gh,length(u),1)) + ...
-                            repmat(w,1,narcs_gh).*sin(repmat(randtheta_gh,length(w),1));
-                    uws_hg = repmat(u,1,narcs_hg).*cos(repmat(randtheta_hg,length(u),1)) + ...
-                            repmat(w,1,narcs_hg).*sin(repmat(randtheta_hg,length(w),1));
-                    if v(3) > 0
+                    uws_gh = repmat(u,1,narcs_gh).*sin(repmat(randtheta_gh,length(u),1)) + ...
+                            repmat(w,1,narcs_gh).*cos(repmat(randtheta_gh,length(w),1));
+                    uws_hg = repmat(u,1,narcs_hg).*sin(repmat(randtheta_hg,length(u),1)) + ...
+                            repmat(w,1,narcs_hg).*cos(repmat(randtheta_hg,length(w),1));
+%                     uws_gh = repmat(u,1,narcs_gh).*cos(repmat(randtheta_gh,length(u),1)) + ...
+%                             repmat(w,1,narcs_gh).*sin(repmat(randtheta_gh,length(w),1));
+%                     uws_hg = repmat(u,1,narcs_hg).*cos(repmat(randtheta_hg,length(u),1)) + ...
+%                             repmat(w,1,narcs_hg).*sin(repmat(randtheta_hg,length(w),1));
+%                     if v(3) > 0
                         t_up = reshape(linspace(0,pi,nt),1,1,nt); % full ellipse is defined from 0 to 2*pi
                         t_dn = reshape(linspace(pi,2*pi,nt),1,1,nt);
-                    else
-                        t_up = -reshape(linspace(0,pi,nt),1,1,nt); % full ellipse is defined from 0 to 2*pi
-                        t_dn = -reshape(linspace(pi,2*pi,nt),1,1,nt);
-                    end
+%                     else
+%                         t_up = -reshape(linspace(0,pi,nt),1,1,nt); % full ellipse is defined from 0 to 2*pi
+%                         t_dn = -reshape(linspace(pi,2*pi,nt),1,1,nt);
+%                     end
                     ellt_up = hg_on*(repmat(midpt,1,narcs_hg,nt) ...
                                 + 0.5*distxyz*repmat(v_,1,narcs_hg,nt).*cos(repmat(t_up,length(v_),narcs_hg,1)) ...
                                 + 0.5*fac*distxyz*repmat(uws_hg,1,1,nt).*sin(repmat(t_up,length(u),narcs_hg,1))); % parametric equation
@@ -443,19 +453,34 @@ if savenclose
     ax = gca;
     set(ax,'XColor','none','YColor','none','ZColor','none');
     set(ax,'XTick',[],'YTick',[],'ZTick',[]);
-    saveas(gcf,[imglab '_sagittal'],imgtype);
+%     exportgraphics(ax,[imglab '_sagittal.' imgtype],'Resolution',300);
+%     export_fig('filename',[imglab '_sagittal'],'-svg');
+%     saveas(gcf,[imglab '_sagittal'],imgtype);
+    set(gcf,'renderer','Painters')
+    print([imglab '_sagittal'],'-dtiffn','-r300');
+%     fig2svg([imglab '_sagittal.svg'],ax)
     
     view([-1, 0, 0]);
     ax = gca;
     set(ax,'XColor','none','YColor','none','ZColor','none');
     set(ax,'XTick',[],'YTick',[],'ZTick',[]);
-    saveas(gcf,[imglab '_axial'],imgtype);
-    
+%     exportgraphics(ax,[imglab '_axial.' imgtype],'Resolution',300);
+%     export_fig('filename',[imglab '_axial'],'-svg');
+%     saveas(gcf,[imglab '_axial'],imgtype);
+    set(gcf,'renderer','Painters')
+    print([imglab '_axial'],'-dtiffn','-r300');
+%     fig2svg([imglab '_axial.svg'],ax)
+
     view([0, -1, 0]);
     ax = gca;
     set(ax,'XColor','none','YColor','none','ZColor','none');
     set(ax,'XTick',[],'YTick',[],'ZTick',[]);
-    saveas(gcf,[imglab '_coronal'],imgtype);
+%     exportgraphics(ax,[imglab '_coronal.' imgtype],'Resolution',300);
+%     export_fig('filename',[imglab '_coronal'],'-svg');
+%     saveas(gcf,[imglab '_coronal'],imgtype);
+    set(gcf,'renderer','Painters')
+    print([imglab '_coronal'],'-dtiffn','-r300');
+%     fig2svg([imglab '_coronal.svg'],ax)
     close
     clear isomap
 end
